@@ -106,33 +106,6 @@ The longer the alkyl chain, the stronger the π-π stacking interaction with the
 
 ---
 
-## Repository Structure
-MD-IL-CNT-Interactions/
-├── README.md
-├── structures/                  # Molecular structure files (.pdb)
-│   ├── CNT.pdb                  # (15,15) armchair carbon nanotube
-│   ├── EMIM_BF4.pdb
-│   ├── BMIM_BF4.pdb
-│   ├── HMIM_BF4.pdb
-│   └── OMIM_BF4.pdb
-├── EMIM-BF4/
-│   ├── Minimization/
-│   ├── Heating/
-│   ├── Equilibration/
-│   └── Production/
-├── BMIM-BF4/
-├── HMIM-BF4/
-└── OMIM-BF4/
-
-Each IL folder contains the complete simulation workflow:
-- `.namd` — NAMD input script with all simulation parameters
-- `.coor` / `.vel` / `.xsc` — coordinate, velocity, and box dimension files
-- `.dcd` — binary trajectory file
-- `.log` — simulation log with energy, temperature, pressure output
-- `restart.*` — checkpoint files for continuing interrupted runs
-
----
-
 ## How to Reproduce
 
 1. Install [NAMD 2.14](https://www.ks.uiuc.edu/Research/namd/) and [VMD](https://www.ks.uiuc.edu/Research/vmd/)
