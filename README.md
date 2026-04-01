@@ -9,7 +9,7 @@
 
 ## Why This Research Matters
 
-![Initial and Final Simulation Snapshot](initial_dinal_snapshot.png)
+![Initial and Final Simulation Snapshot](initial_final_snapshot.png) 
 
 Carbon nanotubes (CNTs) have exceptional potential in energy storage, sensors, and electronics — but their strong van der Waals interactions cause them to bundle and aggregate in most solvents, severely limiting practical use.
 
