@@ -1,0 +1,136 @@
+#############################################################
+## JOB DESCRIPTION                                         ##
+#############################################################
+
+# Minimization of 219 molecules of IL 
+# mixed with 2657 molecules of water and
+# 6 molecules of CsNO3
+
+
+#############################################################
+## ADJUSTABLE PARAMETERS                                   ##
+#############################################################
+
+structure          ../common/IL219-Mixed.psf
+coordinates        ../common/IL219-Mixed.pdb
+
+set temperature    0
+set outputname     IL219-Mixed_min
+set restart	   0
+
+# Continuing a job from the restart files
+if {$restart} {
+set inputname      $outputname
+Coordinates        ../$inputname.restart.coor
+Velocities         ../$inputname.restart.vel  ;# remove the "temperature" entry if you use this!
+extendedSystem	   ../$inputname.restart.xsc
+} 
+
+firsttimestep      0
+
+
+#############################################################
+## SIMULATION PARAMETERS                                   ##
+#############################################################
+
+# Input
+paraTypeCharmm	    on
+parameters          ../common/ILnWater.params
+if {$restart-1} {
+temperature	    $temperature
+}
+
+# Force-Field Parameters
+exclude             scaled1-4
+1-4scaling          0.5
+cutoff              12.0
+switching           on
+switchdist          10.5
+pairlistdist        13.5
+
+# Integrator Parameters
+timestep            1.0  ;# 1fs/step
+rigidBonds          all  ;# needed for 2fs steps
+nonbondedFreq       1
+vdwGeometricSigma   yes
+fullElectFrequency  2  
+stepspercycle       20
+pairlistsperCycle   2
+
+# Periodic Boundary Conditions
+if {$restart-1} {
+cellBasisVector1    62.19   0.0      0.0
+cellBasisVector2     0.0   62.19     0.0
+cellBasisVector3     0.0   0.0      62.19
+cellOrigin          31.095 31.095  31.095
+
+# PME (for full-system periodic electrostatics)
+PME                 yes
+PMEGridSpacing      1.0
+
+#manual grid definition
+#PMEGridSizeX        100
+#PMEGridSizeY        45
+#PMEGridSizeZ        45
+}
+wrapAll             on
+
+# Constant Temperature Control
+if {0} {
+langevin            on    ;# do langevin dynamics
+langevinDamping     1     ;# damping coefficient (gamma) of 1/ps
+langevinTemp        $temperature
+langevinHydrogen    off    ;# don't couple langevin bath to hydrogens
+}
+
+# Constant Pressure Control (variable volume)
+if {0} {
+useGroupPressure      yes ;# needed for rigidBonds
+useFlexibleCell       no
+useConstantArea       no
+
+langevinPiston        on
+langevinPistonTarget  1.01325 ;#  in bar -> 1 atm
+langevinPistonPeriod  100.0
+langevinPistonDecay   50.0
+langevinPistonTemp    $temperature
+}
+
+# Fixed Atoms Constraint (set PDB beta-column to 1)
+if {0} {
+fixedAtoms          on
+fixedAtomsForces    on #Is it necessary?
+fixedAtomsFile      myfixedatoms.pdb
+fixedAtomsCol       B
+}
+
+# IMD Settings (can view sim in VMD)
+if {0} {
+IMDon           on
+IMDport         3000    ;# port number (enter it in VMD)
+IMDfreq         1       ;# send every 1 frame
+IMDwait         no      ;# wait for VMD to connect before running?
+}
+
+# Output
+outputName          $outputname
+
+restartfreq         500     ;# 500steps = every 1ps
+dcdfreq             200
+outputEnergies      100
+outputPressure      100
+
+binaryoutput		no
+binaryrestart		no
+
+#############################################################
+## EXTRA PARAMETERS                                        ##
+#############################################################
+
+
+#############################################################
+## EXECUTION SCRIPT                                        ##
+#############################################################
+
+# Minimization
+minimize            10000
