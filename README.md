@@ -9,6 +9,8 @@
 
 ## Why This Research Matters
 
+![Initial and Final Simulation Snapshot](initial_dinal_snapshot.png)
+
 Carbon nanotubes (CNTs) have exceptional potential in energy storage, sensors, and electronics — but their strong van der Waals interactions cause them to bundle and aggregate in most solvents, severely limiting practical use.
 
 Ionic liquids (ILs) are a promising solution: they can disperse CNTs into stable, fine bundles without altering their molecular structure. But the molecular-level mechanism behind this stabilization was not fully understood.
@@ -68,6 +70,8 @@ All simulations were performed using **NAMD 2.14** with the **OPLS-AA force fiel
 ### 1. Ion Orientation at the CNT Interface
 All four ILs show cations adopting **two distinct orientations**: parallel and perpendicular to the CNT surface. Cations with shorter chains ([EMIM]⁺, [BMIM]⁺) position their imidazolium rings near the CNT sidewall, while longer-chain cations ([HMIM]⁺, [OMIM]⁺) have their rings concentrated at the CNT center due to the alkyl tail lying along the surface.
 
+![Cation Orientations Near CNT Surface](cation_orientation.png)
+
 ### 2. Diffusion Coefficients — Confinement Drastically Slows Ion Mobility
 
 | System | D_cation (bulk) | D_cation (CNT) | Reduction |
@@ -78,6 +82,8 @@ All four ILs show cations adopting **two distinct orientations**: parallel and p
 | [OMIM][BF4] | 1.20 × 10⁻¹² m²/s | 0.28 × 10⁻¹² m²/s | ~4× |
 
 Ion mobility inside CNTs is significantly suppressed relative to bulk, consistent with experimental observations of viscous behavior in IL-CNT composites.
+
+![MSD Diffusion Profiles - Bulk vs CNT Confinement](MSD_diffusion_plots.png)
 
 ### 3. Hydrogen Bonding — Longer Chains Favor More H-Bonds in Confinement
 
@@ -100,6 +106,8 @@ Longer alkyl chains force imidazolium rings toward the CNT center, increasing hy
 | [OMIM][BF4] | −8.75 |
 
 The longer the alkyl chain, the stronger the π-π stacking interaction with the CNT surface, and the more thermodynamically stable the parallel cation orientation.
+
+![Interaction Energy Per Ion for All IL Systems](interaction_energy_plot.png)
 
 ### 5. Ion Conductivity
 [EMIM][BF4] showed the highest confined ion conductivity (0.005 S·m⁻¹), attributed to its higher self-diffusion coefficient and lower hydrogen bond count inside the CNT.
