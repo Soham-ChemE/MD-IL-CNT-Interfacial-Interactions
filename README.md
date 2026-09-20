@@ -1,148 +1,106 @@
-# Molecular Dynamics Study of Imidazolium-Based Ionic Liquids and Carbon Nanotubes
+<p align="center"><img src="hero_md.png" alt="Ionic liquids at carbon nanotube interfaces" width="100%"></p>
 
-**Published in:** *Structural Chemistry*, Springer Nature (2024)  
-**DOI:** [10.1007/s11224-024-02323-3](https://doi.org/10.1007/s11224-024-02323-3)  
-**Authors:** Rima Biswas, Prateek Banerjee, Kavathekar Soham Sudesh  
-**Affiliation:** Process Simulation Research Group, School of Chemical Engineering, Vellore Institute of Technology
+<div align="center">
 
----
+[![Published](https://img.shields.io/badge/Structural%20Chemistry-Springer%20Nature%202024-0b1220?style=flat-square&logoColor=22D3EE)](https://doi.org/10.1007/s11224-024-02323-3)
+[![DOI](https://img.shields.io/badge/DOI-10.1007%2Fs11224--024--02323--3-0b1220?style=flat-square)](https://doi.org/10.1007/s11224-024-02323-3)
+[![NAMD](https://img.shields.io/badge/NAMD-2.14%20%C2%B7%20OPLS--AA-0b1220?style=flat-square)](https://www.ks.uiuc.edu/Research/namd/)
+[![Trajectories](https://img.shields.io/badge/Production-4%20systems%20%C3%97%2020%20ns-0b1220?style=flat-square)](#simulation-protocol)
 
-## Why This Research Matters
+Rima Biswas · Prateek Banerjee · **Soham Sudesh Kavathekar**
+Process Simulation Research Group, School of Chemical Engineering, Vellore Institute of Technology
 
-![Initial and Final Simulation Snapshot](initial_final_snapshot.png) 
-
-Carbon nanotubes (CNTs) have exceptional potential in energy storage, sensors, and electronics — but their strong van der Waals interactions cause them to bundle and aggregate in most solvents, severely limiting practical use.
-
-Ionic liquids (ILs) are a promising solution: they can disperse CNTs into stable, fine bundles without altering their molecular structure. But the molecular-level mechanism behind this stabilization was not fully understood.
-
-**This study uses molecular dynamics (MD) simulations to uncover exactly how imidazolium-based ionic liquids interact with CNTs at the atomic scale** — specifically how the cation alkyl chain length controls ion orientation, diffusion, hydrogen bonding, and interaction energy at the IL-CNT interface.
-
-Understanding this mechanism is critical for designing better CNT-based electrolytes, supercapacitors, and energy storage devices.
+</div>
 
 ---
 
-## System Overview
+## The one-sentence version
 
-Four imidazolium-based ionic liquids with a common [BF4]⁻ anion were studied, varying only in cation alkyl chain length:
+**All-atom molecular dynamics of four imidazolium ionic liquids confined in a (15,15) carbon nanotube shows that the cation's alkyl-chain length sets how the ions orient, how strongly they bind to the tube wall and how fast they move: longer chains bind harder (−8.75 kcal mol⁻¹ per ion for [OMIM]⁺) while the shortest chain, [EMIM]⁺, conducts best (0.005 S m⁻¹).**
 
-| Ionic Liquid | Cation | Alkyl Chain |
+Carbon nanotubes bundle in most solvents through van der Waals attraction. Ionic liquids disperse them without chemical modification, but the interfacial mechanism was not resolved at the molecular level. This study resolves it for the [BF₄]⁻ series and connects it to the properties that matter for CNT-based electrolytes and supercapacitors: interfacial binding, ion mobility and hydrogen bonding.
+
+<p align="center"><img src="initial_final_snapshot.png" width="90%"></p>
+
+---
+
+## Systems
+
+Four ionic liquids sharing the [BF₄]⁻ anion, differing only in cation alkyl-chain length, each with a (15,15) armchair single-walled CNT (50 Å long, 20.5 Å diameter, 1,260 carbon atoms) in a 65 × 65 × 65 Å³ box of 600 ion pairs.
+
+| Ionic liquid | Cation | Chain |
 |---|---|---|
-| [EMIM][BF4] | 1-ethyl-3-methylimidazolium | C2 (shortest) |
-| [BMIM][BF4] | 1-butyl-3-methylimidazolium | C4 |
-| [HMIM][BF4] | 1-hexyl-3-methylimidazolium | C6 |
-| [OMIM][BF4] | 1-octyl-3-methylimidazolium | C8 (longest) |
+| [EMIM][BF₄] | 1-ethyl-3-methylimidazolium | C2 |
+| [BMIM][BF₄] | 1-butyl-3-methylimidazolium | C4 |
+| [HMIM][BF₄] | 1-hexyl-3-methylimidazolium | C6 |
+| [OMIM][BF₄] | 1-octyl-3-methylimidazolium | C8 |
 
-Each IL was simulated with a (15,15) armchair single-walled CNT:
-- **Length:** 50 Å
-- **Diameter:** 20.5 Å
-- **Carbon atoms:** 1260
+## Simulation protocol
 
----
+NAMD 2.14, OPLS-AA force field with CL&P parameters for the ions, CHELPG partial charges, particle-mesh Ewald electrostatics, 1 fs time step, frames every 1 ps.
 
-## Simulation Protocol
-
-All simulations were performed using **NAMD 2.14** with the **OPLS-AA force field**.
-
-| Stage | Ensemble | Duration | Purpose |
+| Stage | Ensemble | Length | Purpose |
 |---|---|---|---|
-| Minimization | — | — | Relax initial geometry |
-| Heating | NVT | 100 ps (5 annealing cycles, 300–650 K) | Equilibrate ion distribution |
-| Equilibration | NPT | 5 ns + 5 ns at 300 K, 1 atm | Confirm CNT filling |
-| Production | NPT | 20 ns at 300 K, 1 atm | Collect trajectory data |
+| Minimisation | | | relax the packed configuration |
+| Heating | NVT | 100 ps, five annealing cycles 300 to 650 K | equilibrate the ion distribution |
+| Equilibration | NPT, 300 K, 1 atm | 5 ns + 5 ns | confirm nanotube filling |
+| Production | NPT, 300 K, 1 atm | 20 ns per system | trajectory analysis |
 
-**Key simulation parameters:**
-- Force field: OPLS-AA with CL&P parameters for IL ions
-- Partial charges: CHELPG method
-- Electrostatics: Particle-Mesh Ewald (PME)
-- Timestep: 1.0 fs
-- Trajectory output: every 1 ps
-- Box size: 65 × 65 × 65 Å³ with 600 IL ion pairs
-
-**Software used:**
-- [NAMD 2.14](https://www.ks.uiuc.edu/Research/namd/) — MD engine
-- [VMD](https://www.ks.uiuc.edu/Research/vmd/) — visualization and CNT coordinate generation
-- [Packmol](http://leandro.iqm.unicamp.br/m3g/packmol/home.shtml) — initial configuration builder
+Tools: [NAMD](https://www.ks.uiuc.edu/Research/namd/) for dynamics, [VMD](https://www.ks.uiuc.edu/Research/vmd/) for analysis, visualisation and CNT coordinates, [Packmol](http://leandro.iqm.unicamp.br/m3g/packmol/home.shtml) for initial packing.
 
 ---
 
-## Key Results
+## Results
 
-### 1. Ion Orientation at the CNT Interface
-All four ILs show cations adopting **two distinct orientations**: parallel and perpendicular to the CNT surface. Cations with shorter chains ([EMIM]⁺, [BMIM]⁺) position their imidazolium rings near the CNT sidewall, while longer-chain cations ([HMIM]⁺, [OMIM]⁺) have their rings concentrated at the CNT center due to the alkyl tail lying along the surface.
+### Orientation at the wall
 
-![Cation Orientations Near CNT Surface](cation_orientation.png)
+Cations adopt two orientations, parallel and perpendicular to the tube surface. Short-chain cations ([EMIM]⁺, [BMIM]⁺) park their imidazolium ring against the sidewall; long-chain cations ([HMIM]⁺, [OMIM]⁺) lay the alkyl tail along the wall and push the ring toward the tube axis.
 
-### 2. Diffusion Coefficients — Confinement Drastically Slows Ion Mobility
+<p align="center"><img src="cation_orientation.png" width="85%"></p>
 
-| System | D_cation (bulk) | D_cation (CNT) | Reduction |
+### Confinement slows the ions three- to four-fold
+
+| System | D<sub>cation</sub>, bulk | D<sub>cation</sub>, in CNT | Reduction |
 |---|---|---|---|
-| [EMIM][BF4] | 1.50 × 10⁻¹⁰ m²/s | 0.44 × 10⁻¹⁰ m²/s | ~3× |
-| [BMIM][BF4] | 1.47 × 10⁻¹² m²/s | 0.36 × 10⁻¹² m²/s | ~4× |
-| [HMIM][BF4] | 1.41 × 10⁻¹² m²/s | 0.33 × 10⁻¹² m²/s | ~4× |
-| [OMIM][BF4] | 1.20 × 10⁻¹² m²/s | 0.28 × 10⁻¹² m²/s | ~4× |
+| [EMIM][BF₄] | 1.50 × 10⁻¹⁰ m² s⁻¹ | 0.44 × 10⁻¹⁰ m² s⁻¹ | ~3× |
+| [BMIM][BF₄] | 1.47 × 10⁻¹² m² s⁻¹ | 0.36 × 10⁻¹² m² s⁻¹ | ~4× |
+| [HMIM][BF₄] | 1.41 × 10⁻¹² m² s⁻¹ | 0.33 × 10⁻¹² m² s⁻¹ | ~4× |
+| [OMIM][BF₄] | 1.20 × 10⁻¹² m² s⁻¹ | 0.28 × 10⁻¹² m² s⁻¹ | ~4× |
 
-Ion mobility inside CNTs is significantly suppressed relative to bulk, consistent with experimental observations of viscous behavior in IL-CNT composites.
+<p align="center"><img src="MSD_diffusion_plots.png" width="85%"></p>
 
-![MSD Diffusion Profiles - Bulk vs CNT Confinement](MSD_diffusion_plots.png)
+### Hydrogen bonding and interfacial binding both grow with chain length
 
-### 3. Hydrogen Bonding — Longer Chains Favor More H-Bonds in Confinement
+| System | H-bonds per cation in CNT | Interaction energy with CNT (kcal mol⁻¹ ion⁻¹) |
+|---|---|---|
+| [EMIM][BF₄] | 0.78 | ≈ −1.5 |
+| [BMIM][BF₄] | 0.81 | ≈ −4.0 |
+| [HMIM][BF₄] | 0.89 | ≈ −6.5 |
+| [OMIM][BF₄] | 1.01 | −8.75 |
 
-| System | Avg. H-bonds per cation (CNT) |
-|---|---|
-| [EMIM][BF4] | 0.78 |
-| [BMIM][BF4] | 0.81 |
-| [HMIM][BF4] | 0.89 |
-| [OMIM][BF4] | 1.01 |
+Longer chains stack their tails parallel to the graphene-like wall, strengthening dispersion binding, and crowd the rings toward the axis where anion contact, and therefore hydrogen bonding, is more likely.
 
-Longer alkyl chains force imidazolium rings toward the CNT center, increasing hydrogen bond probability with [BF4]⁻ anions.
+<p align="center"><img src="interaction_energy_plot.png" width="85%"></p>
 
-### 4. Interaction Energy — [OMIM][BF4] Binds Most Strongly to CNT
+### Conductivity
 
-| System | Interaction Energy (kcal·mol⁻¹·ion⁻¹) |
-|---|---|
-| [EMIM][BF4] | ~ −1.5 |
-| [BMIM][BF4] | ~ −4.0 |
-| [HMIM][BF4] | ~ −6.5 |
-| [OMIM][BF4] | −8.75 |
-
-The longer the alkyl chain, the stronger the π-π stacking interaction with the CNT surface, and the more thermodynamically stable the parallel cation orientation.
-
-![Interaction Energy Per Ion for All IL Systems](interaction_energy_plot.png)
-
-### 5. Ion Conductivity
-[EMIM][BF4] showed the highest confined ion conductivity (0.005 S·m⁻¹), attributed to its higher self-diffusion coefficient and lower hydrogen bond count inside the CNT.
+[EMIM][BF₄] gives the highest confined ionic conductivity, 0.005 S m⁻¹, from the combination of the fastest self-diffusion and the fewest hydrogen bonds. Binding strength and mobility pull in opposite directions along the series, which is the design trade-off for CNT–IL electrolytes.
 
 ---
 
-## How to Reproduce
+## Reproduce
 
-1. Install [NAMD 2.14](https://www.ks.uiuc.edu/Research/namd/) and [VMD](https://www.ks.uiuc.edu/Research/vmd/)
-2. Clone this repository
-3. For each IL system, run stages in order:
-```bash
-namd2 Minimization/IL_min.namd > Minimization/IL_min.log
-namd2 Heating/IL_heat.namd > Heating/IL_heat.log
-namd2 Equilibration/IL_equil.namd > Equilibration/IL_equil.log
-namd2 Production/IL_prod.namd > Production/IL_prod.log
-```
-4. Visualize trajectories using VMD:
-```bash
-vmd structures/CNT.pdb Production/IL_prod.dcd
-```
+Structures for the CNT and the four ionic liquids and a complete NAMD input chain for one system are in this repository.
 
----
+```bash
+namd2 IL219-Mixed_min.namd > IL219-Mixed_min.log      # minimisation; heating, equilibration and production follow the same pattern
+vmd CNT.pdb IL219-Mixed_min.dcd                        # inspect
+```
 
 ## Citation
 
-If you use this data or methodology, please cite:
-
-> Biswas, R., Banerjee, P., & Kavathekar, S. S. (2024). Molecular dynamics studies on interfacial interactions between imidazolium-based ionic liquids and carbon nanotubes. *Structural Chemistry*. https://doi.org/10.1007/s11224-024-02323-3
-
----
+> Biswas, R., Banerjee, P. and Kavathekar, S. S. (2024). Molecular dynamics studies on interfacial interactions between imidazolium-based ionic liquids and carbon nanotubes. *Structural Chemistry*, 35, 1743–1753. https://doi.org/10.1007/s11224-024-02323-3
 
 ## Contact
 
-**Kavathekar Soham Sudesh**  
-MS Chemical & Biomolecular Engineering, University of Pennsylvania  
-📧 stg3719@seas.upenn.edu  
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Soham%20Kavathekar-blue)](https://www.linkedin.com/in/soham-kavathekar-72a22b246)
+Soham Kavathekar · MS Chemical & Biomolecular Engineering, University of Pennsylvania · [stg3719@seas.upenn.edu](mailto:stg3719@seas.upenn.edu) · [LinkedIn](https://www.linkedin.com/in/soham-kavathekar-72a22b246)
