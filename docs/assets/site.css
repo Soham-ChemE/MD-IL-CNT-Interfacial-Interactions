@@ -1,5 +1,5 @@
 /* Shared design system for Soham Kavathekar's project pages. Tokens, nav, pinned hero, story sections, sticky figure, tables. */
-:root{--bg:#f6f8fb;--bg2:#ffffff;--ink:#0b1220;--muted:#5b6676;--line:#dfe5ee;--acc:#7c3aed;--acc2:#059669;--card:#ffffff;--shadow:0 10px 40px rgba(11,18,32,.08);--glass:rgba(255,255,255,.72)}
+:root{--bg:#f6f8fb;--bg2:#ffffff;--ink:#0b1220;--muted:#5b6676;--line:#dfe5ee;--acc:#7c3aed;--acc2:#047857;--card:#ffffff;--shadow:0 10px 40px rgba(11,18,32,.08);--glass:rgba(255,255,255,.72)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1220;--bg2:#0f172a;--ink:#e6edf3;--muted:#8b98a9;--line:#1f2a3c;--acc:#a78bfa;--acc2:#34d399;--card:#111a2b;--shadow:0 10px 40px rgba(0,0,0,.4);--glass:rgba(11,18,32,.72)}}
 :root[data-theme="dark"]{--bg:#0b1220;--bg2:#0f172a;--ink:#e6edf3;--muted:#8b98a9;--line:#1f2a3c;--acc:#a78bfa;--acc2:#34d399;--card:#111a2b;--shadow:0 10px 40px rgba(0,0,0,.4);--glass:rgba(11,18,32,.72)}
 *{box-sizing:border-box}html{scroll-behavior:auto}html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!important}.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}.lenis.lenis-stopped{overflow:hidden}
