@@ -13,7 +13,7 @@ let COL = COLS[S.isDark() ? 'dark' : 'light']; const RAD = { 0: .42, 1: .44, 2: 
   if (st.failed) return;
   const { scene, camera } = st;
   const ctr = new OrbitControls(camera, canvas); ctr.enableDamping = true; ctr.dampingFactor = .08; ctr.enableZoom = false; ctr.enablePan = false; ctr.autoRotate = !reduced; ctr.autoRotateSpeed = .4;
-  scene.add(new THREE.HemisphereLight(0xffffff, 0x223355, .9)); const dl = new THREE.DirectionalLight(0xffffff, 1.6); dl.position.set(30, 50, 40); scene.add(dl);
+  const hemi = new THREE.HemisphereLight(0xffffff, 0x223355, .9); scene.add(hemi); const dl = new THREE.DirectionalLight(0xffffff, 1.6); dl.position.set(30, 50, 40); scene.add(dl);
   const A = D.atoms, N = A.t.length, SC = .1; // 1 scene unit = 10 Å
   const g = new THREE.Group(); scene.add(g); g.rotation.y = Math.PI / 2; // tube axis (data z) along screen x
   const sph = new THREE.SphereGeometry(1, phone ? 6 : 8, phone ? 4 : 6); const byT = {}; for (let i = 0; i < N; i++) (byT[A.t[i]] = byT[A.t[i]] || []).push(i);
@@ -46,12 +46,12 @@ let COL = COLS[S.isDark() ? 'dark' : 'light']; const RAD = { 0: .42, 1: .44, 2: 
     if (ctr.autoRotate || dragging) changed = true;
     ctr.update();
     const ei = .25 + .75 * glow; for (const k of [4, 5]) if (mats[k] && Math.abs(mats[k].emissiveIntensity - ei) > 1e-3) { mats[k].emissiveIntensity = ei; changed = true; }
-    if (st.bloom) st.bloom.strength = .25 + .3 * glow;
+    st.setBloom(.25 + .3 * glow);
     if (st.bokeh) { st.bokeh.uniforms.focus.value = camera.position.distanceTo(ctr.target); }
     if (Math.abs(T - lastT) > 1e-4) { lastT = T; changed = true; }
     return changed;
   });
-  st.onTheme = dark => { COL = COLS[dark ? 'dark' : 'light']; for (const t in mats) mats[t].color.setHex(COL[t]); st.dirty = true; };
+  st.onTheme = dark => { COL = COLS[dark ? 'dark' : 'light']; for (const t in mats) mats[t].color.setHex(COL[t]); hemi.intensity = .9 * st.lights; dl.intensity = 1.6 * st.lights; st.dirty = true; }; st.onTheme(st.dark);
 })();
 
 // ---------- sticky: the four ion pairs ----------
@@ -60,7 +60,7 @@ let COL = COLS[S.isDark() ? 'dark' : 'light']; const RAD = { 0: .42, 1: .44, 2: 
   const st = createStage(canvas, { fov: 36, env: true, envIntensity: .8, alpha: false }); if (st.failed) return;
   const { scene, camera } = st; camera.position.set(0, 6, 16);
   const ctr = new OrbitControls(camera, canvas); ctr.enableDamping = true; ctr.enableZoom = false; ctr.enablePan = false; ctr.autoRotate = !reduced; ctr.autoRotateSpeed = 1.2;
-  scene.add(new THREE.HemisphereLight(0xffffff, 0x223355, .9)); const dl = new THREE.DirectionalLight(0xffffff, 1.5); dl.position.set(5, 8, 6); scene.add(dl);
+  const hemi2 = new THREE.HemisphereLight(0xffffff, 0x223355, .9); scene.add(hemi2); const dl = new THREE.DirectionalLight(0xffffff, 1.5); dl.position.set(5, 8, 6); scene.add(dl); st.onTheme = () => { hemi2.intensity = .9 * st.lights; dl.intensity = 1.5 * st.lights; }; st.onTheme();
   const EL = { C: [0xa78bfa, .55], N: [0x60a5fa, .58], H: [0xe2e8f0, .3], B: [0x34d399, .6], F: [0x6ee7b7, .5] }; const sph = new THREE.SphereGeometry(1, 20, 14); let grp = null, cur = .001;
   function build(k) {
     const P = D.pairs[k]; if (!P) return; if (grp) { scene.remove(grp); grp.traverse(o => { if (o.geometry && o.geometry !== sph) o.geometry.dispose(); if (o.material) o.material.dispose(); }); }

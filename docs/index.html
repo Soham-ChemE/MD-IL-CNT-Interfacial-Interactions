@@ -11,15 +11,15 @@
 <meta name="theme-color" content="#0b1220">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23a78bfa' stroke-width='4'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%2334d399'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="assets/site.css">
-<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
-<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js">
 <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
 <script defer src="assets/data.js"></script>
 <script defer src="assets/site.js"></script>
-<script type="module" src="assets/scene.js"></script>
-<noscript><style>.hero .fallback{opacity:1}.reveal{opacity:1;transform:none}</style></noscript>
+<script type="module">if(!(window.SITE&&window.SITE.softGL)){import('./assets/scene.js');import('./assets/body.js');}</script>
+<noscript><style>.hero .fallback{opacity:1}.reveal{opacity:1;transform:none}.viz img.fallback{opacity:1}</style></noscript>
 </head>
 <body>
 <nav><div class="wrap"><a class="brand" href="#top">IL / CNT interfaces</a>
@@ -54,7 +54,7 @@
 <p class="lead reveal">A (15,15) armchair single-walled nanotube, 50 Å long and 20 Å across, sits in a periodic box with 600 ion pairs of [EMIM][BF₄], [BMIM][BF₄], [HMIM][BF₄] or [OMIM][BF₄]. NAMD 2.14 with the OPLS-AA force field and CL&amp;P ion parameters, particle-mesh Ewald electrostatics, a 1 fs step. Minimisation, five annealing cycles between 300 and 650 K, 5 + 5 ns of NPT equilibration, then 20 ns of production per system.</p>
 <div class="two">
 <div class="tablewrap reveal"><table><thead><tr><th>What the repository verifies</th><th class="num">Value</th><th>From</th></tr></thead><tbody id="sysTable"></tbody></table></div>
-<div class="card reveal"><b>Ions inside the tube <span class="tag">minimised structure</span></b><img data-fig="fig_rdf" style="margin-top:10px" alt="Number density of cation ring nitrogen and anion boron atoms against distance from the tube axis in the minimised structure, with the tube wall marked at about 10 Å" src="assets/fig_rdf_dark.svg" width="640" height="360"><p class="note">Ion positions relative to the tube axis in the 19,260-atom minimised configuration. This is the starting structure of the published simulations, not a production average; the production trajectories are not in the repository.</p></div>
+<div class="vizcard reveal"><div class="vizhead"><b>Ions inside the tube, minimised structure</b><span class="legend"><span><i style="background:var(--c-blue)"></i>cation ring N</span><span><i style="background:var(--c-green)"></i>anion B</span></span></div><div class="viz" data-viz="rdf" role="img" aria-label="Two 3D ribbons of ion number density against distance from the tube axis in the minimised structure, with the tube wall marked at about 10 angstroms"><img class="fallback" alt="" data-viz-fig="viz_rdf" loading="lazy"></div><div class="vizfoot">Ion positions relative to the tube axis in the 19,260-atom minimised configuration, the starting structure of the published simulations. Hover a ribbon.</div></div>
 </div></div></section>
 
 <section class="story alt" id="chain"><div class="wrap">
@@ -71,8 +71,8 @@
 <div class="step" data-step="OMIM"><h3>[OMIM]⁺, C8</h3><p>Strongest interfacial binding, −8.75 kcal/mol per ion, and the most hydrogen bonds, about one per cation. Binding and mobility pull in opposite directions along the series: the design trade-off for CNT–IL electrolytes.</p></div>
 </div></div>
 <div class="two" style="margin-top:20px;align-items:start">
-<div class="tablewrap reveal"><table><thead><tr><th>Ionic liquid</th><th>Chain</th><th class="num">D<sub>cation</sub> bulk (m²/s)</th><th class="num">D<sub>cation</sub> in CNT (m²/s)</th><th class="num">H-bonds per cation</th><th class="num">E<sub>int</sub> with CNT (kcal/mol/ion)</th></tr></thead><tbody id="paperTable"></tbody></table><p class="note">Values as reported in the article; the repository does not contain the production trajectories needed to recompute them. Values marked ≈ are read from the interaction-energy figure.</p></div>
-<div class="card reveal"><b>Interaction energy against chain length <span class="tag">figure from the article</span></b><img src="assets/interaction_energy_plot.png" alt="Interaction energy between each ionic liquid and the carbon nanotube against alkyl chain length, from the published analysis" style="margin-top:10px;border-radius:12px" width="397" height="274"></div>
+<div class="tablewrap reveal"><table><thead><tr><th>Ionic liquid</th><th>Chain</th><th class="num">D<sub>cation</sub> bulk (m²/s)</th><th class="num">D<sub>cation</sub> in CNT (m²/s)</th><th class="num">H-bonds per cation</th><th class="num">E<sub>int</sub> with CNT (kcal/mol/ion)</th></tr></thead><tbody id="paperTable"></tbody></table><p class="note">Values as reported in the article (<i>Structural Chemistry</i> 35, 1743–1753, 2024); values marked ≈ are read from its interaction-energy figure.</p></div>
+<div class="vizcard reveal"><div class="vizhead"><b>Binding and hydrogen bonding against chain length</b><span class="legend">values reported in the article</span></div><div class="viz" data-viz="chain" role="img" aria-label="3D bar field: interaction energy with the nanotube of about 1.5, 4.0, 6.5 and 8.75 kcal per mol per ion and hydrogen bonds per cation of 0.78, 0.81, 0.89 and 1.01 for EMIM, BMIM, HMIM and OMIM"><img class="fallback" alt="" data-viz-fig="viz_chain" loading="lazy"></div><div class="vizfoot">Both grow with chain length: the octyl tail stacks along the graphene-like wall and crowds the ring toward the axis, where anion contact is likelier. Hover a bar.</div></div>
 </div>
 </div></section>
 
@@ -80,17 +80,17 @@
 <div class="eyebrow reveal">03 · Confinement <span class="tag">published results</span></div>
 <h2 class="reveal">Inside the tube the cations slow down three- to four-fold.</h2>
 <div class="two">
-<div class="card reveal"><img src="assets/MSD_diffusion_plots.png" alt="Mean-squared displacement against time for the four ionic liquids, bulk and inside the carbon nanotube, from the published analysis" style="border-radius:12px" width="749" height="949" loading="lazy"></div>
+<div class="vizcard reveal"><div class="vizhead"><b>Cation diffusion, bulk and confined</b><span class="legend">values reported in the article</span></div><div class="viz tall" data-viz="mobility" role="img" aria-label="3D bar field on a log axis: cation diffusion coefficients in the bulk and inside the nanotube for the four ionic liquids, three to four times lower on confinement"><img class="fallback" alt="" data-viz-fig="viz_mobility" loading="lazy"></div><div class="vizfoot">Log axis. [EMIM]⁺ is fastest in both environments; every cation slows three- to four-fold inside the tube.</div></div>
 <div class="reveal"><p class="lead">Mean-squared displacement of the cations drops by a factor of three to four on confinement for every chain length, with [EMIM]⁺ the fastest in both environments. Binding strength grows with chain length while mobility falls, so the best conductor of the series is the weakest binder.</p>
-<div class="card"><img src="assets/cation_orientation.png" alt="Cation orientation at the nanotube wall: parallel and perpendicular arrangements for short and long chains, from the published analysis" style="border-radius:12px" width="795" height="611" loading="lazy"></div></div>
+<div class="vizcard"><div class="vizhead"><b>At the wall</b><span class="legend"><span><i style="background:var(--c-grey)"></i>tube</span><span><i style="background:var(--c-violet)"></i>cation C</span><span><i style="background:var(--c-blue)"></i>N</span></span></div><div class="viz" data-viz="wall" role="img" aria-label="Exploded 3D drawing of the nanotube wall with an OMIM cation lying parallel to it and an EMIM cation standing with its ring against it, built from the coordinate files in the repository"><img class="fallback" alt="" data-viz-fig="viz_wall" loading="lazy"></div><div class="vizfoot">Short chains park the imidazolium ring flat against the sidewall; long chains lay the alkyl tail along it. Drawn from the tube and ion-pair coordinates in the repository.</div></div></div>
 </div></div></section>
 
 <section class="story alt" id="repo"><div class="wrap">
 <div class="eyebrow reveal">04 · What is in the repository</div>
 <h2 class="reveal">Structures, one complete NAMD minimisation and its log.</h2>
-<p class="lead reveal">The CNT and the four ion-pair structures, the NAMD input for the minimisation of the [BMIM][BF₄] system, its 10,000-step energy log, the trajectory it wrote and the final coordinates. The structure file and force-field parameters it references are not included, so the run cannot be re-executed from the repository as is.</p>
+<p class="lead reveal">The CNT and the four ion-pair structures, the NAMD input for the minimisation of the [BMIM][BF₄] system, its 10,000-step energy log, the trajectory it wrote and the final 19,260-atom coordinates, which the hero renders atom for atom.</p>
 <div class="two">
-<div class="card reveal"><img data-fig="fig_energy" alt="Total, electrostatic and van der Waals energy against minimisation step on log axes; the packed configuration relaxes from about 2.1 million to minus 47 thousand kcal per mol" src="assets/fig_energy_dark.svg" width="640" height="360" loading="lazy"></div>
+<div class="vizcard reveal"><div class="vizhead"><b>The minimisation</b><span class="legend"><span><i style="background:var(--c-hot)"></i>total</span><span><i style="background:var(--c-violet)"></i>van der Waals</span><span><i style="background:var(--c-cyan)"></i>electrostatic</span></span></div><div class="viz" data-viz="minimisation" role="img" aria-label="Three 3D ribbons of total, van der Waals and electrostatic energy against conjugate-gradient step on log axes; the packed configuration relaxes from about 2.1 million to minus 47 thousand kcal per mol"><img class="fallback" alt="" data-viz-fig="viz_minimisation" loading="lazy"></div><div class="vizfoot">10,000 steps from <code>IL219-Mixed_min.log</code>: the overlaps of the packed configuration relax within the first few hundred steps, the electrostatics over the rest.</div></div>
 <div class="reveal"><pre><code>git clone https://github.com/Soham-ChemE/MD-IL-CNT-Interfacial-Interactions.git
 cd MD-IL-CNT-Interfacial-Interactions
 pip install -r requirements.txt
