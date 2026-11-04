@@ -9,6 +9,10 @@ Writes:
   docs/assets/data.js                  window.MD = {...} (classic script, works from file://)
   docs/assets/fig_*_{dark,light}.svg   minimisation energy and radial distribution figures
   docs/assets/social-preview.png       1280x640
+  docs/assets/{MSD_diffusion_plots,cation_orientation,interaction_energy_plot}.png
+                                       the three figures prepared for the article, quantised copies of the repository-root
+                                       files, so that docs/index.html can reference them below the GitHub Pages root
+                                       (the site is served from /docs, so "../file.png" resolves above the site and 404s)
 Run from the repository root:  python docs/build_assets.py
 Nothing here reproduces the production results of the paper (those trajectories are not in the repository); the figures
 describe the minimised structure that is.
@@ -17,6 +21,7 @@ import json, os, collections
 import numpy as np
 import matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); OUT = os.path.join(ROOT, "docs", "assets"); os.makedirs(OUT, exist_ok=True)
 
@@ -117,3 +122,60 @@ fig.text(0.05, 0.62, "All-atom MD of four imidazolium [BF₄] ionic liquids\ncon
 fig.text(0.05, 0.38, f"Structural Chemistry 35, 1743–1753 (2024)\n{len(A):,}-atom minimised structure in the repository\n{n_cation} ion pairs, {res_counts['CNT']}-atom tube", color="#22d3ee", fontsize=14, va="top")
 fig.text(0.05, 0.10, "R. Biswas, P. Banerjee, S. S. Kavathekar  |  github.com/Soham-ChemE", color="#8b98a9", fontsize=12)
 fig.savefig(os.path.join(OUT, "social-preview.png"), dpi=100, facecolor=DARK); plt.close(fig); print("wrote social-preview.png")
+
+# ---------------- figures prepared for the article (published analysis; not recomputable from this repository) ----------------
+# GitHub Pages serves this site from /docs, so the page can only load files inside docs/. Copy the three article figures in,
+# quantised to 256 colours to keep docs/ small. The repository-root originals stay the canonical files the README shows.
+for f in ["MSD_diffusion_plots.png", "cation_orientation.png", "interaction_energy_plot.png"]:
+    im = Image.open(os.path.join(ROOT, f)).convert("RGBA")
+    im.quantize(256, method=Image.Quantize.FASTOCTREE, dither=Image.Dither.NONE).save(os.path.join(OUT, f), optimize=True)
+    print("copied", f, os.path.getsize(os.path.join(OUT, f)), "bytes")
+
+# ---------------- animated README hero (SVG with CSS keyframes; GitHub renders these through <img>) ----------------
+# An end-on slab of the same minimised coordinates (|z| < 8 Å), rotating about the tube axis, next to the headline numbers.
+# SMIL is not used. Everything is inline; no fonts or scripts. The file must stay under 1.5 MB.
+slab = np.abs(P[:, 2]) < 8.0
+order2 = np.argsort(P[slab, 2])  # far atoms first
+sx, sy, stt = P[slab, 0][order2], P[slab, 1][order2], np.array(t)[slab][order2]
+svg_col = {0: "#8b98a9", 1: "#a78bfa", 2: "#60a5fa", 3: "#334155", 4: "#34d399", 5: "#6ee7b7"}; svg_r = {0: 2.6, 1: 2.8, 2: 2.9, 3: 1.3, 4: 3.1, 5: 2.5}
+SCL = 7.2; CX, CY = 1170, 250  # 1 Å = 7.2 px, 62 Å cell -> 446 px
+circ = []
+for ti in (3, 1, 2, 5, 4, 0):
+    k = stt == ti
+    pts = " ".join(f"<circle cx=\"{CX + x * SCL:.1f}\" cy=\"{CY - y * SCL:.1f}\" r=\"{svg_r[ti]}\"/>" for x, y in zip(sx[k], sy[k]))
+    circ.append(f"<g fill=\"{svg_col[ti]}\"{' opacity=\"0.55\"' if ti == 3 else ''}>{pts}</g>")
+atoms_svg = "".join(circ)
+lines = [("19,260 atoms", "minimised structure in the repository, one sphere per atom"), ("600 ion pairs", f"{cation_name} with [BF₄]⁻ around a 1,260-atom (15,15) tube"),
+         ("4 ionic liquids", "C2 to C8 chains; binding grows, mobility falls"), ("−8.75 kcal/mol", "per ion for [OMIM][BF₄] at the wall; 1.01 H-bonds per cation")]
+stat_svg = ""
+for i, (big, small) in enumerate(lines):
+    stat_svg += f"<g class=\"st s{i}\"><text x=\"80\" y=\"268\" class=\"big\">{big}</text><text x=\"80\" y=\"300\" class=\"small\">{small}</text></g>"
+svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 500" width="1600" height="500" role="img" aria-label="Ionic liquids at carbon nanotube walls: end-on view of the minimised 19,260-atom simulation box, rotating">
+<style>
+.t{{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}}
+.h{{font-size:54px;font-weight:800;fill:#e6edf3;letter-spacing:-1.5px}}.sub{{font-size:21px;fill:#8b98a9}}.big{{font-size:34px;font-weight:800;fill:#22d3ee}}.small{{font-size:16px;fill:#8b98a9}}.foot{{font-size:15px;fill:#5b6676}}
+#slab{{transform-origin:{CX}px {CY}px;animation:spin 48s linear infinite}}
+#ring{{transform-origin:{CX}px {CY}px;animation:spin 48s linear infinite reverse}}
+.st{{opacity:0;animation:cycle 16s infinite}}.s1{{animation-delay:4s}}.s2{{animation-delay:8s}}.s3{{animation-delay:12s}}
+#glow{{animation:pulse 6s ease-in-out infinite}}
+@keyframes spin{{to{{transform:rotate(360deg)}}}}
+@keyframes cycle{{0%,22%{{opacity:1}}25%,97%{{opacity:0}}100%{{opacity:1}}}}
+@keyframes pulse{{0%,100%{{opacity:.35}}50%{{opacity:.75}}}}
+@media (prefers-reduced-motion:reduce){{#slab,#ring,#glow{{animation:none}}.st{{animation:none;opacity:0}}.s0{{opacity:1}}}}
+</style>
+<rect width="1600" height="500" fill="#0b1220"/>
+<radialGradient id="rg" cx="{CX}" cy="{CY}" r="300" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#34d399" stop-opacity=".22"/><stop offset=".5" stop-color="#a78bfa" stop-opacity=".10"/><stop offset="1" stop-color="#0b1220" stop-opacity="0"/></radialGradient>
+<circle id="glow" cx="{CX}" cy="{CY}" r="300" fill="url(#rg)"/>
+<clipPath id="cp"><rect x="{CX - 240}" y="{CY - 240}" width="480" height="480" rx="24"/></clipPath>
+<g clip-path="url(#cp)"><g id="slab">{atoms_svg}</g></g>
+<g id="ring" fill="none" stroke="#1f2a3c" stroke-width="1.5"><circle cx="{CX}" cy="{CY}" r="{cnt_radius * SCL:.1f}" stroke="#8b98a9" stroke-opacity=".35" stroke-dasharray="4 6"/><circle cx="{CX}" cy="{CY}" r="236"/></g>
+<g class="t">
+<text x="80" y="120" class="h">Ionic liquids at</text><text x="80" y="178" class="h">carbon nanotube walls</text>
+<text x="80" y="218" class="sub">All-atom MD of four imidazolium [BF₄] ionic liquids in a (15,15) CNT</text>
+{stat_svg}
+<text x="80" y="420" class="foot">NAMD 2.14 · OPLS-AA · Structural Chemistry 35, 1743–1753 (2024)</text>
+<text x="80" y="446" class="foot">End-on view of the minimised cell, |z| &lt; 8 Å slab, {int(slab.sum()):,} atoms, from IL219-Mixed_min.coor · open the live page for the full 3D structure</text>
+</g>
+</svg>"""
+with open(os.path.join(OUT, "hero.svg"), "w", encoding="utf-8") as f: f.write(svg)
+print("wrote hero.svg", os.path.getsize(os.path.join(OUT, "hero.svg")), "bytes,", int(slab.sum()), "atoms in the slab")
