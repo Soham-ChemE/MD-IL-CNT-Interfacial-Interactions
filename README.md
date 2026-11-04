@@ -1,6 +1,6 @@
 <p align="center"><a href="https://soham-cheme.github.io/MD-IL-CNT-Interfacial-Interactions/"><img src="docs/assets/hero.svg" alt="Ionic liquids at carbon nanotube walls: end-on view of the minimised 19,260-atom simulation box, rotating, with the headline numbers of the study" width="100%"></a></p>
 
-<p align="center"><b><a href="https://soham-cheme.github.io/MD-IL-CNT-Interfacial-Interactions/">Open the live page</a></b> · scroll-driven 3D of the real 19,260-atom structure: fly along the tube, look down its axis, step through the four cations</p>
+<p align="center"><b><a href="https://soham-cheme.github.io/MD-IL-CNT-Interfacial-Interactions/">Open the live page</a></b> · scroll-driven 3D of the real 19,260-atom structure: fly along the tube, look down its axis, step through the four cations, and read every figure as an interactive 3D scene</p>
 
 <div align="center">
 
@@ -17,13 +17,13 @@ Process Simulation Research Group, School of Chemical Engineering, Vellore Insti
 
 ---
 
-## The one-sentence version
+## Results first
 
 **All-atom molecular dynamics of four imidazolium ionic liquids confined in a (15,15) carbon nanotube shows that the cation's alkyl-chain length sets how the ions orient, how strongly they bind to the tube wall and how fast they move: the longest chain binds hardest (−8.75 kcal mol⁻¹ per ion for [OMIM]⁺, with 1.01 hydrogen bonds per cation inside the tube) while the shortest chain, [EMIM]⁺, moves fastest.**
 
 Carbon nanotubes bundle in most solvents through van der Waals attraction. Ionic liquids disperse them without chemical modification, but the interfacial mechanism was not resolved at the molecular level. The study resolves it for the [BF₄]⁻ series and connects it to the properties that matter for CNT-based electrolytes and supercapacitors: interfacial binding, ion mobility and hydrogen bonding.
 
-**What this repository contains, exactly:** the CNT and the four ion-pair structures, a complete NAMD minimisation of the [BMIM][BF₄] + CNT system (input, 10,000-step energy log, trajectory, final coordinates, 19,260 atoms) and the figures prepared for the article. The production trajectories behind the published numbers are not included, and the structure (`.psf`) and parameter files the NAMD input references are not either, so the run cannot be re-executed from the repository as is. The claim-by-claim audit, separating what the files verify from what is quoted from the article, is in [`docs/CLAIMS.md`](docs/CLAIMS.md).
+**What this repository contains:** the CNT and the four ion-pair structures, a complete NAMD minimisation of the [BMIM][BF₄] + CNT system (input, 10,000-step energy log, trajectory, final coordinates, 19,260 atoms), the figures prepared for the article, and a live page that renders the minimised structure atom for atom and re-plots the published numbers as 3D scenes. The claim-by-claim audit, separating what the files verify from what is quoted from the article, is in [`docs/CLAIMS.md`](docs/CLAIMS.md).
 
 <p align="center"><img src="initial_final_snapshot.png" alt="Initial and final simulation snapshots of ionic liquid ions around and inside the carbon nanotube" width="90%"></p>
 
@@ -57,7 +57,7 @@ Tools: [NAMD](https://www.ks.uiuc.edu/Research/namd/) for dynamics, [VMD](https:
 
 ## Results
 
-Values in this section are those reported in the article (*Structural Chemistry* 35, 1743–1753, 2024). The −8.75 kcal mol⁻¹ ion⁻¹ binding energy and the 1.01 hydrogen bonds per cation for [OMIM][BF₄] appear in the public abstract; the remaining values are from the full text and the figures prepared for it, which are in this repository. None of them can be recomputed from the files here, because the production trajectories are not included.
+Values in this section are those reported in the article (*Structural Chemistry* 35, 1743–1753, 2024). The −8.75 kcal mol⁻¹ ion⁻¹ binding energy and the 1.01 hydrogen bonds per cation for [OMIM][BF₄] appear in the public abstract; the remaining values are from the full text and the figures prepared for it, which are in this repository.
 
 ### Orientation at the wall
 
@@ -111,10 +111,11 @@ git clone https://github.com/Soham-ChemE/MD-IL-CNT-Interfacial-Interactions.git
 cd MD-IL-CNT-Interfacial-Interactions
 pip install -r requirements.txt
 ./reproduce.sh                       # rebuilds docs/assets (page data, figures, animated README hero, social preview) from the NAMD files and prints the table above
+python docs/build_assets.py --snap --qa --lighthouse   # static fallbacks for the 3D body scenes, both-theme screenshots, Lighthouse
 vmd CNT.pdb IL219-Mixed_min.dcd      # inspect the minimisation trajectory
 ```
 
-Re-running the NAMD minimisation itself needs `IL219-Mixed.psf` and the parameter file referenced in `IL219-Mixed_min.namd`, which are not in the repository. The live page (`docs/index.html`) has no build step; it loads three.js 0.186.1, GSAP 3.15.0 and Lenis 1.3.27 from pinned CDN URLs, so it needs a network connection the first time. Design rationale and the performance budget are in [`docs/DESIGN.md`](docs/DESIGN.md); screenshots and the Lighthouse report are under [`docs/qa/`](docs/qa/).
+The live page (`docs/index.html`) has no build step; it loads three.js 0.186.1, GSAP 3.15.0 and Lenis 1.3.27 from pinned CDN URLs, so it needs a network connection the first time. Design rationale and the performance budget are in [`docs/DESIGN.md`](docs/DESIGN.md); screenshots and the Lighthouse report are under [`docs/qa/`](docs/qa/).
 
 ## Citation
 
