@@ -9,6 +9,10 @@ Writes:
   docs/assets/data.js                  window.MD = {...} (classic script, works from file://)
   docs/assets/fig_*_{dark,light}.svg   minimisation energy and radial distribution figures
   docs/assets/social-preview.png       1280x640
+  docs/assets/{MSD_diffusion_plots,cation_orientation,interaction_energy_plot}.png
+                                       the three figures prepared for the article, quantised copies of the repository-root
+                                       files, so that docs/index.html can reference them below the GitHub Pages root
+                                       (the site is served from /docs, so "../file.png" resolves above the site and 404s)
 Run from the repository root:  python docs/build_assets.py
 Nothing here reproduces the production results of the paper (those trajectories are not in the repository); the figures
 describe the minimised structure that is.
@@ -17,6 +21,7 @@ import json, os, collections
 import numpy as np
 import matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); OUT = os.path.join(ROOT, "docs", "assets"); os.makedirs(OUT, exist_ok=True)
 
@@ -117,3 +122,11 @@ fig.text(0.05, 0.62, "All-atom MD of four imidazolium [BF₄] ionic liquids\ncon
 fig.text(0.05, 0.38, f"Structural Chemistry 35, 1743–1753 (2024)\n{len(A):,}-atom minimised structure in the repository\n{n_cation} ion pairs, {res_counts['CNT']}-atom tube", color="#22d3ee", fontsize=14, va="top")
 fig.text(0.05, 0.10, "R. Biswas, P. Banerjee, S. S. Kavathekar  |  github.com/Soham-ChemE", color="#8b98a9", fontsize=12)
 fig.savefig(os.path.join(OUT, "social-preview.png"), dpi=100, facecolor=DARK); plt.close(fig); print("wrote social-preview.png")
+
+# ---------------- figures prepared for the article (published analysis; not recomputable from this repository) ----------------
+# GitHub Pages serves this site from /docs, so the page can only load files inside docs/. Copy the three article figures in,
+# quantised to 256 colours to keep docs/ small. The repository-root originals stay the canonical files the README shows.
+for f in ["MSD_diffusion_plots.png", "cation_orientation.png", "interaction_energy_plot.png"]:
+    im = Image.open(os.path.join(ROOT, f)).convert("RGBA")
+    im.quantize(256, method=Image.Quantize.FASTOCTREE, dither=Image.Dither.NONE).save(os.path.join(OUT, f), optimize=True)
+    print("copied", f, os.path.getsize(os.path.join(OUT, f)), "bytes")
