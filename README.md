@@ -1,8 +1,8 @@
-<p align="center"><a href="https://soham-cheme.github.io/MD-IL-CNT-Interfacial-Interactions/"><img src="docs/assets/hero.png" alt="Live page: the minimised 19,260-atom simulation box, a (15,15) carbon nanotube surrounded and filled by 600 [BMIM][BF4] ion pairs, rendered in 3D" width="100%"></a></p>
+<p align="center"><a href="https://soham-cheme.github.io/MD-IL-CNT-Interfacial-Interactions/"><img src="docs/assets/hero.svg" alt="Ionic liquids at carbon nanotube walls: end-on view of the minimised 19,260-atom simulation box, rotating, with the headline numbers of the study" width="100%"></a></p>
+
+<p align="center"><b><a href="https://soham-cheme.github.io/MD-IL-CNT-Interfacial-Interactions/">Open the live page</a></b> · scroll-driven 3D of the real 19,260-atom structure: fly along the tube, look down its axis, step through the four cations</p>
 
 <div align="center">
-
-### [▶ View the live page](https://soham-cheme.github.io/MD-IL-CNT-Interfacial-Interactions/) · rotate the 19,260-atom minimised box, look down the tube, step through the four cations
 
 [![Published](https://img.shields.io/badge/Structural%20Chemistry-Springer%20Nature%202024-0b1220?style=flat-square&logoColor=22D3EE)](https://doi.org/10.1007/s11224-024-02323-3)
 [![DOI](https://img.shields.io/badge/DOI-10.1007%2Fs11224--024--02323--3-0b1220?style=flat-square)](https://doi.org/10.1007/s11224-024-02323-3)
@@ -110,11 +110,11 @@ Longer chains stack their tails parallel to the graphene-like wall, strengthenin
 git clone https://github.com/Soham-ChemE/MD-IL-CNT-Interfacial-Interactions.git
 cd MD-IL-CNT-Interfacial-Interactions
 pip install -r requirements.txt
-./reproduce.sh                       # rebuilds docs/assets (page data, figures, social preview) from the NAMD files and prints the table above
+./reproduce.sh                       # rebuilds docs/assets (page data, figures, animated README hero, social preview) from the NAMD files and prints the table above
 vmd CNT.pdb IL219-Mixed_min.dcd      # inspect the minimisation trajectory
 ```
 
-Re-running the NAMD minimisation itself needs `IL219-Mixed.psf` and the parameter file referenced in `IL219-Mixed_min.namd`, which are not in the repository. The live page (`docs/index.html`) opens from `file://` with no build step.
+Re-running the NAMD minimisation itself needs `IL219-Mixed.psf` and the parameter file referenced in `IL219-Mixed_min.namd`, which are not in the repository. The live page (`docs/index.html`) has no build step; it loads three.js 0.186.1, GSAP 3.15.0 and Lenis 1.3.27 from pinned CDN URLs, so it needs a network connection the first time. Design rationale and the performance budget are in [`docs/DESIGN.md`](docs/DESIGN.md); screenshots and the Lighthouse report are under [`docs/qa/`](docs/qa/).
 
 ## Citation
 
