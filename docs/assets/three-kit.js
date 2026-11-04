@@ -19,11 +19,12 @@ export function createStage(canvas, opts = {}) {
   const stage = { canvas, holder, dirty: true, visible: true, disposed: false, S };
   (window.__stages = window.__stages || []).push(stage);
   let renderer;
+  const fallback = () => { holder.classList.add('no-webgl'); const fb = holder.querySelector('.fallback'); if (fb && fb.dataset.src) fb.src = fb.dataset.src; stage.failed = true; return stage; };
+  // probe first so a machine without WebGL gets the static image without a console error from the renderer
+  try { const probe = document.createElement('canvas'); if (!(probe.getContext('webgl2') || probe.getContext('webgl'))) return fallback(); } catch (e) { return fallback(); }
   try {
     renderer = new THREE.WebGLRenderer({ canvas, antialias: !opts.bloom, alpha: !!opts.alpha, powerPreference: 'high-performance' });
-  } catch (e) {
-    holder.classList.add('no-webgl'); const fb = holder.querySelector('.fallback'); if (fb && fb.dataset.src) fb.src = fb.dataset.src; stage.failed = true; return stage;
-  }
+  } catch (e) { return fallback(); }
   const maxDpr = opts.maxDpr || (S.phone ? 1.5 : 2);
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, maxDpr));
   renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = opts.exposure || 1.0;

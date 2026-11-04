@@ -4,17 +4,17 @@ Served from docs/ with python -m http.server, loaded in headless Chromium (softw
 
 ## Lighthouse (desktop preset)
 
-Performance 99, Accessibility 92, Best Practices 96, SEO 100
+Performance 100, Accessibility 96, Best Practices 100, SEO 100
 
 | Metric | Value |
 |---|---|
 | First Contentful Paint | 0.3 s |
 | Largest Contentful Paint | 0.7 s |
-| Speed Index | 0.9 s |
+| Speed Index | 0.8 s |
 | Total Blocking Time | 0 ms |
 | Cumulative Layout Shift | 0 |
 | Time to Interactive | 0.7 s |
-| Avoids enormous network payloads | Total size was 1,346 KiB |
+| Avoids enormous network payloads | Total size was 1,332 KiB |
 
 Report: lighthouse.report.html, lighthouse.report.json.
 

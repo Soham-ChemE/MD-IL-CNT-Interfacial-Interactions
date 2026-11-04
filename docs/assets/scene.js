@@ -34,6 +34,7 @@ let COL = COLS[S.isDark() ? 'dark' : 'light']; const RAD = { 0: .42, 1: .44, 2: 
   const pathWide = cameraPath([[5.5, 3.6, 14.5], [11, 2.2, 9.5], [13.2, .9, 3.2], [13.4, .5, .2]], [[2.2, -.3, 0], [2.2, 0, 0], [1.6, 0, 0], [1.2, 0, 0]]);
   const pathNarrow = cameraPath([[0, 3.6, 17], [7, 2.4, 11], [10.5, 1, 3], [10.8, .6, .2]], [[0, 1.2, 0], [0, .6, 0], [0, 0, 0], [0, 0, 0]]);
   const pos = new THREE.Vector3(), tgt = new THREE.Vector3(); let lastT = -1, dragging = false, since = 0;
+  g.position.x = (st.wide !== false) ? 2.6 : 0; (st.wide !== false ? pathWide : pathNarrow).at(reduced ? 1 : 0, pos, tgt); camera.position.copy(pos); ctr.target.copy(tgt); ctr.update(); // start on the path
   canvas.addEventListener('pointerdown', () => { dragging = true; since = performance.now(); }); addEventListener('pointerup', () => setTimeout(() => dragging = false, 2500));
   ctr.addEventListener('change', () => st.dirty = true);
   st.loop((t, dt) => {
